@@ -6,11 +6,15 @@ loadSprite("base", "sprites/base.png")
 loadSprite("tube", "sprites/pipe-red.png")
 loadSprite("gameover", "sprites/gameover.png")
 loadSprite("message", "sprites/message.png")
+loadSprite("bg2", "sprites/background-day.png")
+
 
 
 setGravity(2400)
 
 loadBean()
+
+/*========================= Scene du message du debut !  ========================*/
 
 
 scene("message", ()=> {
@@ -37,18 +41,27 @@ scene("message", ()=> {
 
 go("message")
 
+
+
+
+/*========================= Scene du jeu  ========================*/
+
 scene("game", () => {
 
-    const PIPE_OPEN = 240
-    const PIPE_MIN = 60
+    const TUBE_OPEN = 240
+    const TUBE_MIN = 60
     const JUMP_FORCE = 800
     const SPEED = 320
     const CEILING = -60
 
+/*l'ajout du background*/
     add([
         sprite("bg", {width: width(), height: height()}),
 
     ]);
+
+    /*l'ajout de l'oiseau */
+
     const bird = add([
         sprite("bird", {height: 50}),
         pos(width() / 4, 0),
@@ -56,13 +69,14 @@ scene("game", () => {
         body(),
     ])
 
-
+    /*"Parametre de l'oiseau"*/
     bird.onUpdate(() => {
         if (bird.pos.y >= height() || bird.pos.y <= CEILING) {
             go("lose", score)
         }
     })
 
+    /*configuration des touche pour sauter*/
 
     onKeyPress("space", () => {
         bird.jump(JUMP_FORCE)
@@ -80,10 +94,14 @@ scene("game", () => {
 
     })
 
+    /*Fonction qui fait apparaitre les tube aléatoirement */
+
     function spawntube() {
 
-        const h1 = rand(PIPE_MIN, height() - PIPE_MIN - PIPE_OPEN)
-        const h2 = height() - h1 - PIPE_OPEN
+        const h1 = rand(TUBE_MIN, height() - TUBE_MIN - TUBE_OPEN)
+        const h2 = height() - h1 - TUBE_OPEN
+
+        /*Parametre des tube*/
 
         add([
             pos(width(), 0),
@@ -98,9 +116,9 @@ scene("game", () => {
         ])
 
         add([
-            pos(width(), h1 + PIPE_OPEN),
+            pos(width(), h1 + TUBE_OPEN),
             rect(64, h2),
-            color(0, 127, 255),
+            sprite('tube'),
             outline(4),
             area(),
             move(LEFT, SPEED),
@@ -124,6 +142,9 @@ scene("game", () => {
             addScore()
             p.passed = true
         }
+
+
+
     })
 
     loop(1, () => {
@@ -143,11 +164,14 @@ scene("game", () => {
         score++
         scoreLabel.text = score
 
-
     }
+
 
 })
 
+
+
+/*=========================Scene qui affiche le texte quand on perd ========================*/
 scene("lose", (score) => {
 
 
