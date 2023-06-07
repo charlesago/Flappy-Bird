@@ -8,6 +8,7 @@ loadSprite("gameover", "sprites/gameover.png")
 loadSprite("message", "sprites/message.png")
 loadSprite("bg2", "sprites/background-day.png")
 loadSprite("coin", "sprites/undefined - Imgur.png")
+loadSprite("tubeHaut", "sprites/toppipe.png")
 
 
 
@@ -95,19 +96,20 @@ scene("game", () => {
         add([
             pos(width(), 0),
             rect(64, h1),
-            color(0, 127, 255),
+            color(2,167,89),
             outline(4),
             area(),
-            move(LEFT, SPEED),
             z(2),
+            move(LEFT, SPEED),
             offscreen({ destroy: true }),
+            // give it tags to easier define behaviors see below
             "tube",
         ])
 
         add([
             pos(width(), h1 + TUBE_OPEN),
             rect(64, h2),
-            color(0, 127, 255),
+            color(2,167,89),
             outline(4),
             area(),
             z(2),
@@ -119,14 +121,18 @@ scene("game", () => {
 
        add([
             sprite("coin", {height: 50}),
-            pos(width(), h1 + 90 ),
+            pos(rand(1, width()), rand(1, height() )),
             area(),
-           z(2),
+            z(2),
             move(LEFT, SPEED),
             offscreen({ destroy: true }),
            "coin"
         ]);
+
     }
+
+
+
 
 
     bird.onCollide("tube", () => {
@@ -139,6 +145,13 @@ scene("game", () => {
         destroy(c)
     })
 
+
+    loop(2, () => {
+        spawntube()
+    })
+
+
+
     onUpdate("tube", (p) => {
         if (p.pos.x + p.width <= bird.pos.x && p.passed === false) {
             addScore()
@@ -146,12 +159,7 @@ scene("game", () => {
         }
     })
 
-    loop(1, () => {
-        spawntube()
-    })
-
     let score = 0
-
     const scoreLabel = add([
         text(score),
         pos(width() / 2, 80),
@@ -163,7 +171,6 @@ scene("game", () => {
         score++
         scoreLabel.text = score
     }
-
 
 
 
