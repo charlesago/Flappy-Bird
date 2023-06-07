@@ -7,7 +7,8 @@ loadSprite("gameover", "sprites/gameover.png")
 loadSprite("message", "sprites/message.png")
 loadSprite("bg2", "sprites/background-day.png")
 loadSprite("coin", "sprites/undefined - Imgur.png")
-
+loadSprite("birdHaut", "sprites/bluebird-upflap.png")
+loadSprite("bg3", "sprites/ghostwiretokyo-tokyo-627153326ccd5761625815.jpg")
 
 
 setGravity(2400)
@@ -43,11 +44,13 @@ scene("game", () => {
         timer(),
     ])
 
+
     const TUBE_OPEN = 240
     const TUBE_MIN = 60
     const JUMP_FORCE = 800
-    const SPEED = 320
+    let SPEED = 320
     const CEILING = -60
+
 
 /*l'ajout du background*/
     add([
@@ -57,7 +60,7 @@ scene("game", () => {
     /*l'ajout de l'oiseau */
 
     const bird = add([
-        sprite("bird", {height: 50}),
+        sprite("birdHaut", {height: 50}),
         pos(width() / 4, 0),
         area(),
         z(2),
@@ -67,31 +70,36 @@ scene("game", () => {
     bird.onUpdate(() => {
         if (bird.pos.y >= height() || bird.pos.y <= CEILING) {
             go("lose", score)
+
         }
     })
     /*configuration des touches pour sauter*/
 
     onKeyPress("space", () => {
+        sprite("bird", {height: 50})
         bird.jump(JUMP_FORCE)
     })
 
     onGamepadButtonPress("south", () => {
         bird.jump(JUMP_FORCE)
+        sprite("bird", {height: 50})
     })
 
     onClick(() => {
         bird.jump(JUMP_FORCE)
+        sprite("bird", {height: 50})
+
     })
     /*Fonction qui fait apparaitre les tube aléatoirement */
 
     function spawntube() {
 
-        const h1 = rand(TUBE_MIN, height() - TUBE_MIN - TUBE_OPEN)
-        const h2 = height() - h1 - TUBE_OPEN
+        let h1 = rand(TUBE_MIN, height() - TUBE_MIN - TUBE_OPEN)
+        let h2 = height() - h1 - TUBE_OPEN
 
         /*Parametre des tube*/
 
-        add([
+    add([
             pos(width(), 0),
             rect(64, h1),
             color(2,167,89),
@@ -104,7 +112,7 @@ scene("game", () => {
             "tube",
         ])
 
-        add([
+     add([
             pos(width(), h1 + TUBE_OPEN),
             rect(64, h2),
             color(2,167,89),
@@ -117,9 +125,9 @@ scene("game", () => {
             { passed: false },
         ])
 
-       add([
+     const coin =  add([
             sprite("coin", {height: 50}),
-            pos(rand(1, width()), rand(1, height() )),
+            pos(rand(1, width(10000)), rand(1, height(1000) )),
             area(),
             z(2),
             move(LEFT, SPEED),
@@ -127,8 +135,13 @@ scene("game", () => {
            "coin"
         ]);
 
-    }
+        coin.onCollide("tube", ()=>{
+            destroy(coin)
+        })
 
+
+
+    }
 
 
 
@@ -239,14 +252,30 @@ scene("game", () => {
     pauseMenu.paused = true
 
     onUpdate("bg", (bg) => {
-        if (score > 1) {
+        if (score > 5 ) {
+            SPEED = 1000
             destroy(bg)
             add([
                 sprite("bg2", {width: width(), height: height()}),
+                "bg2",
                 z(0)
             ]);
+
         }
     })
+    onUpdate("bg2", (bg2) => {
+        if (score > 10) {
+            SPEED = 200
+            destroy(bg2)
+            add([
+                sprite("bg3", {width: width(), height: height()}),
+                z(0)
+            ]);
+
+        }
+    })
+
+
 })
 
 /*=========================Scene qui affiche le texte quand on perd ========================*/
@@ -290,7 +319,6 @@ scene("lose", (score) => {
     onKeyPress("space", () => go("game"))
     onClick(() => go("game"))
 })
-
 
 
 
