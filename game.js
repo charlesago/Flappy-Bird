@@ -3,12 +3,10 @@ kaboom()
 loadSprite("bird", "sprites/bluebird-downflap.png")
 loadSprite("bg", "sprites/background-night.png")
 loadSprite("base", "sprites/base.png")
-loadSprite("tube", "sprites/pipe-red.png")
 loadSprite("gameover", "sprites/gameover.png")
 loadSprite("message", "sprites/message.png")
 loadSprite("bg2", "sprites/background-day.png")
 loadSprite("coin", "sprites/undefined - Imgur.png")
-loadSprite("tubeHaut", "sprites/toppipe.png")
 
 
 
