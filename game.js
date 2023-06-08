@@ -1,4 +1,6 @@
-kaboom({width: 400, height: 900})
+kaboom({height: 844 , width:390,  stretch: true})
+
+
 
 loadSprite("bird", "sprites/bluebird-downflap.png")
 loadSprite("bg", "sprites/background-night.png")
