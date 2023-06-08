@@ -1,4 +1,4 @@
-kaboom({stretch: null, scale:1, width: 600})
+kaboom({stretch: null, scale:2, width: 600})
 
 
 
