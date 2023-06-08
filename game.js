@@ -1,4 +1,4 @@
-kaboom({height: 840 , width:390})
+kaboom({height: 840 , width:390, stretch: true})
 
 
 
